@@ -7,7 +7,7 @@
  * Author: Sebs Studio
  * Author URI: http://www.sebs-studio.com
  * Author Email: sebastien@sebs-studio.com
- * Requires at least: 3.5
+ * Requires at least: 3.7.1
  * Tested up to: 3.8.1
  *
  * Text Domain: mailpoet_piwik_addon
@@ -60,7 +60,7 @@ final class MailPoet_Piwik_Addon {
 	 *
 	 * @var string
 	 */
-	public $wp_version_min = "3.5";
+	public $wp_version_min = "3.7.1";
 
 	/**
 	 * The single instance of the class
