@@ -23,4 +23,72 @@ function mailpoet_piwik_addon_get_screen_ids() {
 	) );
 }
 
+/**
+	* Extends step 3 by adding the option to track via Piwik.
+	* @param type $fields
+	* @return type
+	*/
+function extend_step3_piwik_tracking($fields){
+	$config = WYSIJA::get('config','model');
+
+	// When this checkbox is ticked the piwik fields below show up.
+	$fields['piwikenabled'] = array(
+		'type' => 'checkbox',
+		'isparams' => 'params',
+		'class' => '',
+		'label' => __('Enable to track with Piwik', WYSIJA),
+		'desc' => '',
+	);
+
+	$fields['piwikbaseurl'] = array(
+		'type' => 'input',
+		'isparams' => 'params',
+		'class' => 'required',
+		'label' => __('Piwik Base URL', WYSIJA),
+		'desc' => __('Enter your Piwik base url. For example, "http://yourdomain.com/piwik/". No idea what I\'m talking about? [link]Get help.[/link]', WYSIJA),
+		'link' => '<a href="http://peepbo.de/board/viewtopic.php?f=5&t=10" target="_blank">'
+	);
+
+	// Not sure if this field will be needed if the user puts in the site ID number below.
+	$fields['piwikauthtoken'] = array(
+		'type' => 'input',
+		'isparams' => 'params',
+		'class' => 'required',
+		'label' => __('Piwik Auth Token', WYSIJA),
+		'desc' => __('Enter your personal Piwik authentification token. You can get the token on the API page inside your Piwik interface. It looks like "1234a5cd6789e0a12345b678cd9012ef"', WYSIJA),
+	);
+
+	$fields['piwiksiteid'] = array(
+		'type' => 'input',
+		'isparams' => 'params',
+		'class' => 'required',
+		'label' => __('Piwik Site ID', WYSIJA),
+		'desc' => __('Enter the ID number of the site you are tracking', WYSIJA),
+	);
+
+	$fields['piwikcampaignname'] = array(
+		'type' => 'input',
+		'isparams' => 'params',
+		'class' => 'required',
+		'label' => __('Piwik Campaign Name', WYSIJA),
+		'desc' => __('Enter the name of the campaign you are tracking', WYSIJA),
+	);
+
+	$fields['piwikcampaignkeyword'] = array(
+		'type' => 'input',
+		'isparams' => 'params',
+		'class' => 'optional',
+		'label' => __('Piwik Campaign Keyword', WYSIJA),
+		'desc' => __('(optional) Used to track the keyword, or sub-category', WYSIJA),
+	);
+
+	// Need to work on this part more.
+	if( isset( $_REQUEST['wysija']['email']['params']['piwikenabled']) ) {
+		$data['email']['params']['piwiktrackingcode'] = $fields['piwiktrackingcode']['default'] = $_REQUEST['wysija']['email']['params']['piwiktrackingcode'];
+	}
+
+	return $fields;
+}
+
+
 ?>

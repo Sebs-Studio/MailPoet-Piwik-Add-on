@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MailPoet Piwik Addon\n"
-"POT-Creation-Date: 2014-02-13 17:20+0100\n"
-"PO-Revision-Date: 2014-02-13 17:20+0100\n"
+"POT-Creation-Date: 2014-02-17 18:09+0100\n"
+"PO-Revision-Date: 2014-02-17 18:09+0100\n"
 "Last-Translator: Sebastien <sebastien@sebs-studio.com>\n"
 "Language-Team: Sebs Studio <sebastien@sebs-studio.com>\n"
 "Language: en_US\n"
@@ -16,25 +16,61 @@ msgstr ""
 "X-Poedit-KeywordsList: __;_e;_n;_x\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: includes/admin/class-mailpoet-piwik-addon-admin-profile.php:39
-msgid "MailPoet"
-msgstr ""
-
-#: includes/admin/class-mailpoet-piwik-addon-admin-profile.php:42
-msgid "Subscribe to MailPoet"
-msgstr ""
-
-#: includes/admin/class-mailpoet-piwik-addon-admin-profile.php:43
-msgid ""
-"If checked, you are subscribed to the newsletters provided by this site."
-msgstr ""
-
 #: includes/admin/class-mailpoet-piwik-addon-install.php:125
 msgid "What's new:"
 msgstr ""
 
 #: includes/admin/mailpoet-piwik-addon-admin-functions.php:19
 msgid "MailPoet Piwik Add-on"
+msgstr ""
+
+#: includes/admin/mailpoet-piwik-addon-admin-functions.php:39
+msgid "Enable to track with Piwik"
+msgstr ""
+
+#: includes/admin/mailpoet-piwik-addon-admin-functions.php:47
+msgid "Piwik Base URL"
+msgstr ""
+
+#: includes/admin/mailpoet-piwik-addon-admin-functions.php:48
+msgid ""
+"Enter your Piwik base url. For example, \"http://yourdomain.com/piwik/\". No "
+"idea what I'm talking about? [link]Get help.[/link]"
+msgstr ""
+
+#: includes/admin/mailpoet-piwik-addon-admin-functions.php:57
+msgid "Piwik Auth Token"
+msgstr ""
+
+#: includes/admin/mailpoet-piwik-addon-admin-functions.php:58
+msgid ""
+"Enter your personal Piwik authentification token. You can get the token on "
+"the API page inside your Piwik interface. It looks like "
+"\"1234a5cd6789e0a12345b678cd9012ef\""
+msgstr ""
+
+#: includes/admin/mailpoet-piwik-addon-admin-functions.php:65
+msgid "Piwik Site ID"
+msgstr ""
+
+#: includes/admin/mailpoet-piwik-addon-admin-functions.php:66
+msgid "Enter the ID number of the site you are tracking"
+msgstr ""
+
+#: includes/admin/mailpoet-piwik-addon-admin-functions.php:73
+msgid "Piwik Campaign Name"
+msgstr ""
+
+#: includes/admin/mailpoet-piwik-addon-admin-functions.php:74
+msgid "Enter the name of the campaign you are tracking"
+msgstr ""
+
+#: includes/admin/mailpoet-piwik-addon-admin-functions.php:81
+msgid "Piwik Campaign Keyword"
+msgstr ""
+
+#: includes/admin/mailpoet-piwik-addon-admin-functions.php:82
+msgid "(optional) Used to track the keyword, or sub-category"
 msgstr ""
 
 #: mailpoet-piwik-addon.php:134

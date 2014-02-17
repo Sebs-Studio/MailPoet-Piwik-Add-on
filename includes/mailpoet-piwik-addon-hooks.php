@@ -12,5 +12,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
+// Actions
+add_action( 'need_correct_action_hook', array( &$this, 'add_tracking_code' ), 10, 1 );
 
 ?>

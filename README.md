@@ -10,7 +10,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 ## Description
 
-Enables you to track anylatics with Piwik in your newsletters.
+Enables you to track analytics's with Piwik in your newsletters.
 
 ## Localization
 * English (US)[Default] - always included. mailpoet-piwik-addon.pot file in language folder for translations.
