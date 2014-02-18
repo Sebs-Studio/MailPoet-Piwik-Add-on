@@ -84,6 +84,13 @@ final class MailPoet_Piwik_Addon {
 	public $doc_url = "http://docs.sebs-studio.com/extension/mailpoet/mailpoet-piwik-addon/";
 
 	/**
+	 * GitHub Repo URL
+	 *
+	 * @var string
+	 */
+	public $github_repo_url = "https://github.com/seb86/MailPoet-Piwik-Add-on/";
+
+	/**
 	 * Main MailPoet Piwik Addon Instance
 	 *
 	 * Ensures only one instance of  is loaded or can be loaded.
@@ -172,6 +179,8 @@ final class MailPoet_Piwik_Addon {
 		define( 'MAILPOET_PIWIK_ADDON_WP_VERSION_REQUIRE', $this->wp_version_min );
 
 		define( 'MAILPOET_PIWIK_ADDON_README_FILE', 'http://plugins.svn.wordpress.org/mailpoet_piwik_addon/trunk/readme.txt' );
+
+		define( 'GITHUB_REPO_URL' , $this->github_repo_url );
 
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		define( 'MAILPOET_PIWIK_ADDON_SCRIPT_MODE', $suffix );
