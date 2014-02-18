@@ -10,7 +10,7 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-	if ( ! class_exists( 'MailPoet_Piwik_Addon_Install' ) ) {
+if ( ! class_exists( 'MailPoet_Piwik_Addon_Install' ) ) {
 
 	/**
 	 * MailPoet_Piwik_Addon_Install Class
