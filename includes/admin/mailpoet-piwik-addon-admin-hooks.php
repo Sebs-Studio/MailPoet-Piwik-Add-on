@@ -32,7 +32,8 @@ function extend_newsletters() {
 			switch( $_REQUEST['page'] ) {
 
 				case 'wysija_campaigns':
-					add_filter('wysija_extend_step3', 'extend_step3_piwik_tracking' );
+					// This will display the Piwik fields after Google Analytics Campaign
+					add_filter('wysija_extend_step3', 'extend_step3_piwik_tracking', 20 );
 
 				break;
 

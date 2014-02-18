@@ -15,7 +15,6 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 // Include core functions
 include( 'mailpoet-piwik-addon-conditional-functions.php' );
 
-
 function add_tracking_code( $newsletter_id ) {
 	if ( $this->should_tracker_be_output() ) {
 		require_once( MailPoet_Piwik_Addon()->plugin_path . 'classes/class-mailpoet-piwik-addon-tracker.php' );
