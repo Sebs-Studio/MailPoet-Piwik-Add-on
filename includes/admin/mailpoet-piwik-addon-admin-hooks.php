@@ -12,8 +12,18 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
+// Actions
 add_action( 'plugins_loaded', 'extend_newsletters' );
 
+if ( ! is_wp_piwik_plugin_set_for_tracking() ) {
+	add_action('admin_notices', 'display_notice_piwik_set_tracking' );
+}
+
+/**
+ * This function is called to allow other 
+ * actions and filters to work if only 
+ * MailPoet has been detected.
+ */
 function extend_newsletters() {
 	// Will run action and filter hooks if MailPoet is version 2.1.5
 	if ( WYSIJA::get_version() >= '2.1.5' ) {
@@ -32,4 +42,5 @@ function extend_newsletters() {
 
 	} // end if MailPoet version.
 }
+
 ?>

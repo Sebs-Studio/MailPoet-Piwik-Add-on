@@ -24,10 +24,10 @@ function mailpoet_piwik_addon_get_screen_ids() {
 }
 
 /**
-	* Extends step 3 by adding the option to track via Piwik.
-	* @param type $fields
-	* @return type
-	*/
+ * Extends step 3 by adding the option to track via Piwik.
+ * @param type $fields
+ * @return type
+ */
 function extend_step3_piwik_tracking($fields){
 	$config = WYSIJA::get('config','model');
 
@@ -40,23 +40,23 @@ function extend_step3_piwik_tracking($fields){
 		'desc' => '',
 	);
 
-	$fields['piwikbaseurl'] = array(
+	/*$fields['piwikbaseurl'] = array(
 		'type' => 'input',
 		'isparams' => 'params',
 		'class' => 'required',
 		'label' => __('Piwik Base URL', WYSIJA),
 		'desc' => __('Enter your Piwik base url. For example, "http://yourdomain.com/piwik/". No idea what I\'m talking about? [link]Get help.[/link]', WYSIJA),
 		'link' => '<a href="http://peepbo.de/board/viewtopic.php?f=5&t=10" target="_blank">'
-	);
+	);*/
 
 	// Not sure if this field will be needed if the user puts in the site ID number below.
-	$fields['piwikauthtoken'] = array(
+	/*$fields['piwikauthtoken'] = array(
 		'type' => 'input',
 		'isparams' => 'params',
 		'class' => 'required',
 		'label' => __('Piwik Auth Token', WYSIJA),
 		'desc' => __('Enter your personal Piwik authentification token. You can get the token on the API page inside your Piwik interface. It looks like "1234a5cd6789e0a12345b678cd9012ef"', WYSIJA),
-	);
+	);*/
 
 	$fields['piwiksiteid'] = array(
 		'type' => 'input',
@@ -90,5 +90,13 @@ function extend_step3_piwik_tracking($fields){
 	return $fields;
 }
 
+/**
+ * Display admin notice if tracking is not set in WP Piwik.
+ */
+function display_notice_piwik_set_tracking() {
+	echo '<div id="message" class="error"><p>';
+	echo sprintf( __('It appears that you have not set the tracking in WP Piwik. Please complete the <a href="%s">settings</a> in <strong>WP Piwik</strong> for tracking to work in <strong>MailPoet Newsletters</strong>.', 'mailpoet_piwik_addon'), admin_url('options-general.php?page=wp-piwik/wp-piwik.php') );
+	echo '</p></div>';
+}
 
 ?>
