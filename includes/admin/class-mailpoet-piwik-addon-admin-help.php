@@ -33,14 +33,18 @@ class MailPoet_Piwik_Addon_Admin_Help {
 		if ( ! in_array( $screen->id, mailpoet_piwik_addon_get_screen_ids() ) )
 			return;
 
-		$screen->add_help_tab( array(
-			'id'	=> 'mailpoet_piwik_addon_bugs_tab',
-			'title'	=> __( 'Piwik Tracking Addon', 'mailpoet_piwik_addon' ),
-			'content'	=>
+		if( $_REQUEST['action'] == 'editDetails' ){
 
-				'<p>' . sprintf( __( 'If you find a bug within <strong>%s</strong> you can create a ticket via <a href="%s">Github issues</a>. Ensure you read the <a href="%s">contribution guide</a> prior to submitting your report. Be as descriptive as possible.', 'mailpoet_piwik_addon' ), MailPoet_Piwik_Addon()->name, GITHUB_REPO_URL . 'issues?state=open', GITHUB_REPO_URL . 'blob/master/CONTRIBUTING.md' ) . '</p>'
+			$screen->add_help_tab( array(
+				'id'	=> 'mailpoet_piwik_addon_bugs_tab',
+				'title'	=> __( 'Piwik Tracking Addon', 'mailpoet_piwik_addon' ),
+				'content'	=>
 
-		) );
+					'<p>' . sprintf( __( 'If you find a bug within <strong>%s</strong> you can create a ticket via <a href="%s">Github issues</a>. Ensure you read the <a href="%s">contribution guide</a> prior to submitting your report. Be as descriptive as possible.', 'mailpoet_piwik_addon' ), MailPoet_Piwik_Addon()->name, GITHUB_REPO_URL . 'issues?state=open', GITHUB_REPO_URL . 'blob/master/CONTRIBUTING.md' ) . '</p>'
+
+			) );
+
+		}
 
 	}
 
