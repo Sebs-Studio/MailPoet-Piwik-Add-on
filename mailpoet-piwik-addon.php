@@ -1,7 +1,7 @@
 <?php
 /*
- * Plugin Name: MailPoet Piwik Addon
- * Plugin URI: http://www.wordpress.org/plugins/mailpoet-piwik-addon/
+ * Plugin Name: MailPoet Piwik Add-on
+ * Plugin URI: http://www.wordpress.org/plugins/mailpoet-piwik-add-on/
  * Description: Enables you to track anylatics with Piwik in your newsletters.
  * Version: 1.0.0
  * Author: Sebs Studio
@@ -46,7 +46,7 @@ final class MailPoet_Piwik_Addon {
 	 *
 	 * @var string
 	 */
-	public $name = "MailPoet Piwik Addon";
+	public $name = "MailPoet Piwik Add-on";
 
 	/**
 	 * The Plug-in version.
@@ -74,14 +74,14 @@ final class MailPoet_Piwik_Addon {
 	 *
 	 * @var string
 	 */
-	public $web_url = "http://www.wordpress.org/plugins/mailpoet-piwik-addon/";
+	public $web_url = "http://www.wordpress.org/plugins/mailpoet-piwik-add-on/";
 
 	/**
 	 * The Plug-in documentation URL.
 	 *
 	 * @var string
 	 */
-	public $doc_url = "http://docs.sebs-studio.com/extension/mailpoet/mailpoet-piwik-addon/";
+	public $doc_url = "http://docs.sebs-studio.com/extension/mailpoet/mailpoet-piwik-add-on/";
 
 	/**
 	 * GitHub Repo URL
@@ -91,13 +91,13 @@ final class MailPoet_Piwik_Addon {
 	public $github_repo_url = "https://github.com/seb86/MailPoet-Piwik-Add-on/";
 
 	/**
-	 * Main MailPoet Piwik Addon Instance
+	 * Main MailPoet Piwik Add-on Instance
 	 *
 	 * Ensures only one instance of  is loaded or can be loaded.
 	 *
 	 * @access public static
 	 * @see MailPoet_Piwik_Addon()
-	 * @return MailPoet Piwik Addon - Main instance
+	 * @return MailPoet Piwik Add-on - Main instance
 	 */
 	public static function instance() {
 		if ( is_null( self::$_instance ) ) {
@@ -122,27 +122,8 @@ final class MailPoet_Piwik_Addon {
 		$this->includes();
 
 		// Hooks
-		add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( &$this, 'action_links' ) );
 		add_filter( 'plugin_row_meta', array( &$this, 'plugin_row_meta' ), 10, 2 );
 		add_action( 'init', array( &$this, 'init_mailpoet_piwik_addon' ), 0 );
-	}
-
-	/**
-	 * Plugin action links.
-	 *
-	 * @access public
-	 * @param mixed $links
-	 * @return void
-	 */
-	public function action_links( $links ) {
-		// List your action links
-		if( current_user_can( 'manage_options' ) ) {
-			$plugin_links = array(
-				'<a href="' . admin_url( 'admin.php?page=mailpoet_piwik_addon_settings' ) . '">' . __( 'Settings', 'mailpoet_piwik_addon' ) . '</a>',
-			);
-		}
-
-		return array_merge( $links, $plugin_links );
 	}
 
 	/**
@@ -267,10 +248,6 @@ final class MailPoet_Piwik_Addon {
 			$this->admin_includes();
 		}
 
-		if ( defined('DOING_AJAX') ) {
-			$this->ajax_includes();
-		}
-
 		if ( ! is_admin() || defined('DOING_AJAX') ) {
 			$this->frontend_includes();
 		}
@@ -290,23 +267,12 @@ final class MailPoet_Piwik_Addon {
 	}
 
 	/**
-	 * Include required ajax files.
-	 *
-	 * @access public
-	 * @return void
-	 */
-	public function ajax_includes() {
-		//include_once( 'includes/mailpoet-piwik-addon-ajax.php' ); // Ajax functions for admin and the front-end
-	}
-
-	/**
 	 * Include required frontend files.
 	 *
 	 * @access public
 	 * @return void
 	 */
 	public function frontend_includes() {
-		include_once( 'includes/mailpoet-piwik-addon-functions.php' ); // Contains functions for various front-end events
 		include_once( 'includes/mailpoet-piwik-addon-hooks.php' ); // Hooks used in the frontend
 	}
 
@@ -319,13 +285,8 @@ final class MailPoet_Piwik_Addon {
 		// Set up localisation
 		$this->load_plugin_textdomain();
 
-		// Load JavaScript and stylesheets
-		$this->register_scripts_and_styles();
-
-		// This will run on the frontend and for ajax requests
-		if ( ! is_admin() || defined('DOING_AJAX') ) {
-
-		}
+		// Load JavaScript
+		$this->register_scripts();
 	}
 
 	/**
@@ -340,14 +301,7 @@ final class MailPoet_Piwik_Addon {
 	public function load_plugin_textdomain() {
 		$locale = apply_filters( 'plugin_locale', get_locale(), 'mailpoet_piwik_addon' );
 
-		// Admin Locale
-		if ( is_admin() ) {
-			load_textdomain( 'mailpoet_piwik_addon', WP_LANG_DIR . "/mailpoet_piwik_addon/mailpoet_piwik_addon-admin-$locale.mo" );
-			load_textdomain( 'mailpoet_piwik_addon', $this->plugin_path() . "/languages/mailpoet_piwik_addon-admin-$locale.mo" );
-		}
-
-		// Frontend Locale
-		load_textdomain( 'mailpoet_piwik_addon', WP_LANG_DIR . "/mailpoet_piwik_addon/mailpoet_piwik_addon-" . $locale . ".mo" );
+		load_textdomain( 'mailpoet_piwik_addon', WP_LANG_DIR . "/mailpoet-piwik-addon/mailpoet-piwik-addon-" . $locale . ".mo" );
 
 		// Set Plugin Languages Directory
 		// Plugin translations can be filed in the mailpoet-piwik-addon/languages/ directory
@@ -378,42 +332,21 @@ final class MailPoet_Piwik_Addon {
 	}
 
 	/**
-	 * Registers and enqueues stylesheets and javascripts 
-	 * for the administration panel and the front of the site.
+	 * Registers and enqueues javascripts for the 
+	 * administration panel of the site.
 	 *
 	 * @access private
 	 */
-	private function register_scripts_and_styles() {
+	private function register_scripts() {
 		global $wp_locale;
 
 		if ( is_admin() ) {
-			// Main Plugin Javascript
-			//$this->load_file( self::slug . '_admin_script', '/assets/js/admin/mailpoet-piwik-addon' . MAILPOET_PIWIK_ADDON_SCRIPT_MODE . '.js', true, array('jquery'), MailPoet_Piwik_Addon()->version );
-			$this->load_file( self::slug . '_admin_script', '/assets/js/admin/mailpoet-piwik-addon.js', true, array('jquery'), MailPoet_Piwik_Addon()->version );
 
-			// Variables for JS scripts
-			wp_localize_script( self::slug . '_admin_script', 'mailpoet_piwik_addon_admin_params', apply_filters( 'mailpoet_piwik_addon_admin_params', array(
-				'plugin_url' => $this->plugin_url(),
-				)
-			) );
+			$this->load_file( self::slug . '_admin_script', '/assets/js/admin/mailpoet-piwik-addon' . MAILPOET_PIWIK_ADDON_SCRIPT_MODE . '.js', true, array('jquery'), MailPoet_Piwik_Addon()->version );
 
-			// Stylesheets
-			$this->load_file( self::slug . '_admin_style', '/assets/css/admin/mailpoet-piwik-addon.css' );
-		}
-		else {
-			$this->load_file( self::slug . '-script', '/assets/js/frontend/mailpoet-piwik-addon' . MAILPOET_PIWIK_ADDON_SCRIPT_MODE . '.js', true );
+		} // end if is_admin.
 
-			// Stylesheet
-			$this->load_file( self::slug . '-style', '/assets/css/mailpoet-piwik-addon.css' );
-
-			// Variables for JS scripts
-			wp_localize_script( self::slug . '-script', 'mailpoet_piwik_addon_params', apply_filters( 'mailpoet_piwik_addon_params', array(
-				'plugin_url' => $this->plugin_url(),
-				)
-			) );
-
-		} // end if/else
-	} // end register_scripts_and_styles
+	} // end register_scripts
 
 	/**
 	 * Helper function for registering and enqueueing scripts and styles.

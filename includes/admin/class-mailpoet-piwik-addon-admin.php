@@ -20,7 +20,6 @@ if ( ! class_exists( 'MailPoet_Piwik_Addon_Admin' ) ) {
 		public function __construct() {
 			// Actions
 			add_action( 'init', array( &$this, 'includes' ) );
-			add_action( 'current_screen', array( $this, 'conditonal_includes' ) );
 		}
 
 		/**
@@ -33,19 +32,6 @@ if ( ! class_exists( 'MailPoet_Piwik_Addon_Admin' ) ) {
 			// Help
 			if ( apply_filters( 'mailpoet_piwik_addon_enable_admin_help_tab', true ) ) {
 				include( 'class-mailpoet-piwik-addon-admin-help.php' );
-			}
-		}
-
-		/**
-		 * Include admin files conditionally
-		 */
-		public function conditonal_includes() {
-			$screen = get_current_screen();
-
-			switch ( $screen->id ) {
-				case 'toplevel_page_wysija_campaigns' :
-
-				break;
 			}
 		}
 

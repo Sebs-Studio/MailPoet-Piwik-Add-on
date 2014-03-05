@@ -12,9 +12,6 @@
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
-// Include core functions
-include( 'mailpoet-piwik-addon-conditional-functions.php' );
-
 // This function is added to the newsletter.
 function add_tracking_code() {
 	if ( should_tracker_be_output() ) {

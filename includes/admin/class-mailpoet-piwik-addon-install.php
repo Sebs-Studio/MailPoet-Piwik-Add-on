@@ -55,7 +55,7 @@ if ( ! class_exists( 'MailPoet_Piwik_Addon_Install' ) ) {
 		}
 
 		/**
-		 * Install Plugin Name
+		 * Install MailPoet Piwik Add-on
 		 */
 		public function install() {
 			// Queue upgrades

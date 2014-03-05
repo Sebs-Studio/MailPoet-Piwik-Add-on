@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: MailPoet Piwik Addon\n"
-"POT-Creation-Date: 2014-02-18 14:08+0100\n"
-"PO-Revision-Date: 2014-02-18 14:08+0100\n"
-"Last-Translator: Sebastien <sebastien@sebs-studio.com>\n"
+"Project-Id-Version: MailPoet Piwik Add-on\n"
+"POT-Creation-Date: 2014-03-05 18:14+0100\n"
+"PO-Revision-Date: 2014-03-05 18:18+0100\n"
+"Last-Translator: Sebastien <sebastien@ocean-themes.com>\n"
 "Language-Team: Sebs Studio <sebastien@sebs-studio.com>\n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
@@ -37,35 +37,35 @@ msgstr ""
 msgid "MailPoet Piwik Add-on"
 msgstr ""
 
-#: includes/admin/mailpoet-piwik-addon-admin-functions.php:40
+#: includes/admin/mailpoet-piwik-addon-admin-functions.php:39
 msgid "Enable to track with Piwik"
 msgstr ""
 
-#: includes/admin/mailpoet-piwik-addon-admin-functions.php:66
+#: includes/admin/mailpoet-piwik-addon-admin-functions.php:65
 msgid "Piwik Site ID"
 msgstr ""
 
-#: includes/admin/mailpoet-piwik-addon-admin-functions.php:67
+#: includes/admin/mailpoet-piwik-addon-admin-functions.php:66
 msgid "Enter the ID number of the site you are tracking"
 msgstr ""
 
-#: includes/admin/mailpoet-piwik-addon-admin-functions.php:74
+#: includes/admin/mailpoet-piwik-addon-admin-functions.php:73
 msgid "Piwik Campaign Name"
 msgstr ""
 
-#: includes/admin/mailpoet-piwik-addon-admin-functions.php:75
+#: includes/admin/mailpoet-piwik-addon-admin-functions.php:74
 msgid "Enter the name of the campaign you are tracking"
 msgstr ""
 
-#: includes/admin/mailpoet-piwik-addon-admin-functions.php:82
+#: includes/admin/mailpoet-piwik-addon-admin-functions.php:81
 msgid "Piwik Campaign Keyword"
 msgstr ""
 
-#: includes/admin/mailpoet-piwik-addon-admin-functions.php:83
+#: includes/admin/mailpoet-piwik-addon-admin-functions.php:82
 msgid "(optional) Used to track the keyword, or sub-category"
 msgstr ""
 
-#: includes/admin/mailpoet-piwik-addon-admin-functions.php:99
+#: includes/admin/mailpoet-piwik-addon-admin-functions.php:98
 #, php-format
 msgid ""
 "It appears that you have not set the tracking in WP Piwik. Please complete "
@@ -73,27 +73,23 @@ msgid ""
 "work in <strong>MailPoet Newsletters</strong>."
 msgstr ""
 
-#: mailpoet-piwik-addon.php:141
-msgid "Settings"
-msgstr ""
-
-#: mailpoet-piwik-addon.php:162
+#: mailpoet-piwik-addon.php:143
 msgid "Documentation"
 msgstr ""
 
-#: mailpoet-piwik-addon.php:231
+#: mailpoet-piwik-addon.php:212
 #, php-format
 msgid "Sorry, <strong>%s</strong> requires WordPress "
 msgstr ""
 
-#: mailpoet-piwik-addon.php:242
+#: mailpoet-piwik-addon.php:223
 #, php-format
 msgid ""
 "Sorry, <strong>%s</strong> requires WP-Piwik for this plugin to work. Please "
 "install and activate <strong><a href=\"%s\">WP Piwik</a></strong> first."
 msgstr ""
 
-#: mailpoet-piwik-addon.php:253
+#: mailpoet-piwik-addon.php:234
 #, php-format
 msgid ""
 "Sorry, <strong>%s</strong> requires MailPoet Newsletters for this plugin to "
