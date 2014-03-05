@@ -45,7 +45,7 @@ function should_tracker_be_output() {
 function is_wp_piwik_plugin_set_for_tracking() {
 	$wp_piwik_global_settings = get_option( 'wp-piwik_global-settings' );
 
-	return ( isset( $wp_piwik_global_settings['add_tracking_code'] ) && $wp_piwik_global_settings['add_tracking_code'] );
+	return ( isset( $wp_piwik_global_settings['add_tracking_code'] ) && $wp_piwik_global_settings['add_tracking_code'] == '1' );
 }
 
 /**

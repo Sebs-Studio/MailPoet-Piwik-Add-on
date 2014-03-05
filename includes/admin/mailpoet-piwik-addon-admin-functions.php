@@ -20,6 +20,7 @@ function mailpoet_piwik_addon_get_screen_ids() {
 
 	return apply_filters( 'mailpoet_piwik_addon_screen_ids', array(
 		'toplevel_page_' . $mailpoet_piwik_addon_screen_id,
+		'toplevel_page_wysija_campaigns'
 	) );
 }
 
@@ -84,7 +85,7 @@ function extend_step3_piwik_tracking($fields){
 
 	// Need to work on this part more.
 	if( isset( $_REQUEST['wysija']['email']['params']['piwikenabled']) ) {
-		$data['email']['params']['piwiktrackingcode'] = $fields['piwiktrackingcode']['default'] = $_REQUEST['wysija']['email']['params']['piwiktrackingcode'];
+		$data['email']['params']['piwikcampaignname'] = $fields['piwikcampaignname']['default'] = $_REQUEST['wysija']['email']['params']['piwikcampaignname'];
 	}
 
 	return $fields;

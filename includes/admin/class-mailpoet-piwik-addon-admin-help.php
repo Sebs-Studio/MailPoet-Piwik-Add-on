@@ -4,7 +4,7 @@
  *
  * @author 		Sebs Studio
  * @category 	Admin
- * @package 	MailPoet Piwik Addon/Admin
+ * @package 	MailPoet Piwik Add-on/Admin
  * @version 	1.0.0
  */
 

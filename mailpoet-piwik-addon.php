@@ -56,7 +56,7 @@ final class MailPoet_Piwik_Addon {
 	public $version = "1.0.0";
 
 	/**
-	 * The WordPress version the plugin requires minumum.
+	 * The WordPress version the plugin requires minimum.
 	 *
 	 * @var string
 	 */
