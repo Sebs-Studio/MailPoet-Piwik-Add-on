@@ -1,6 +1,6 @@
 <?php
 /**
- * Adds a help tab.
+ * This provides a help tab for the plugin.
  *
  * @author 		Sebs Studio
  * @category 	Admin
@@ -33,7 +33,7 @@ class MailPoet_Piwik_Addon_Admin_Help {
 		if ( ! in_array( $screen->id, mailpoet_piwik_addon_get_screen_ids() ) )
 			return;
 
-		if( $_REQUEST['action'] == 'editDetails' ){
+		if( isset( $_REQUEST['action'] ) && $_REQUEST['action'] == 'editDetails' ){
 
 			$screen->add_help_tab( array(
 				'id'	=> 'mailpoet_piwik_addon_bugs_tab',

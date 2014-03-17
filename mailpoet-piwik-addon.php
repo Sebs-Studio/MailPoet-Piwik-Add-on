@@ -1,7 +1,7 @@
 <?php
 /*
  * Plugin Name: MailPoet Piwik Add-on
- * Plugin URI: http://www.wordpress.org/plugins/mailpoet-piwik-add-on/
+ * Plugin URI: http://wordpress.org/plugins/mailpoet-piwik-add-on/
  * Description: Enables you to track anylatics with Piwik in your newsletters.
  * Version: 1.0.0
  * Author: Sebs Studio
@@ -13,6 +13,15 @@
  * Text Domain: mailpoet_piwik_addon
  * Domain Path: /languages/
  * Network: false
+ *
+ * Copyright: (c) 2014 Sebs Studio. (sebastien@sebs-studio.com)
+ *
+ * License: GNU General Public License v3.0
+ * License URI: http://www.gnu.org/licenses/gpl-3.0.html
+ *
+ * @package MailPoet_Piwik_Add_on
+ * @author Sebs Studio
+ * @category Core
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
@@ -63,6 +72,13 @@ final class MailPoet_Piwik_Addon {
 	public $wp_version_min = "3.7.1";
 
 	/**
+	 * The MailPoet version the plugin requires minimum.
+	 *
+	 * @var string
+	 */
+	public $mp_version_min = "2.6.0.8";
+
+	/**
 	 * The single instance of the class
 	 *
 	 * @var 
@@ -74,14 +90,14 @@ final class MailPoet_Piwik_Addon {
 	 *
 	 * @var string
 	 */
-	public $web_url = "http://www.wordpress.org/plugins/mailpoet-piwik-add-on/";
+	public $web_url = "http://wordpress.org/plugins/mailpoet-piwik-add-on/";
 
 	/**
 	 * The Plug-in documentation URL.
 	 *
 	 * @var string
 	 */
-	public $doc_url = "http://docs.sebs-studio.com/extension/mailpoet/mailpoet-piwik-add-on/";
+	public $doc_url = "https://github.com/seb86/MailPoet-Piwik-Add-on/wiki/";
 
 	/**
 	 * GitHub Repo URL
@@ -115,6 +131,8 @@ final class MailPoet_Piwik_Addon {
 		// Define constants
 		$this->define_constants();
 
+		add_action( 'plugins_loaded', array( &$this, 'plugin_override' ) ); // Must be loaded before everything else.
+
 		// Check plugin requirements
 		$this->check_requirements();
 
@@ -140,7 +158,7 @@ final class MailPoet_Piwik_Addon {
 		}
 
 		$links = array(
-			'<a href="' . esc_url( apply_filters( 'mailpoet_piwik_addon_documentation_url', $this->doc_url ) ) . '">' . __( 'Documentation', 'mailpoet_piwik_addon' ) . '</a>',
+			'<a href="' . esc_url( $this->doc_url ) . '">' . __( 'Documentation', MAILPOET_PIWIK_ADDON_TEXT_DOMAIN ) . '</a>',
 		);
 
 		$input = array_merge( $input, $links );
@@ -154,18 +172,29 @@ final class MailPoet_Piwik_Addon {
 	 * @access private
 	 */
 	private function define_constants() {
-		define( 'MAILPOET_PIWIK_ADDON', $this->name );
-		define( 'MAILPOET_PIWIK_ADDON_FILE', __FILE__ );
-		define( 'MAILPOET_PIWIK_ADDON_VERSION', $this->version );
-		define( 'MAILPOET_PIWIK_ADDON_WP_VERSION_REQUIRE', $this->wp_version_min );
+		define( 'MAILPOET_PIWIK_ADDON', $this->name ); // Plugin Name
+		define( 'MAILPOET_PIWIK_ADDON_FILE', __FILE__ ); // Plugin file name
+		define( 'MAILPOET_PIWIK_ADDON_VERSION', $this->version ); // Plugin version
+		define( 'MAILPOET_PIWIK_ADDON_WP_VERSION_REQUIRE', $this->wp_version_min ); // WordPress requires to be...
+		define( 'MAILPOET_PIWIK_ADDON_TEXT_DOMAIN', self::text_domain );
 
-		define( 'MAILPOET_PIWIK_ADDON_README_FILE', 'http://plugins.svn.wordpress.org/mailpoet_piwik_addon/trunk/readme.txt' );
+		define( 'MAILPOET_PIWIK_ADDON_README_FILE', 'http://plugins.svn.wordpress.org/mailpoet-piwik-addon/trunk/readme.txt' );
 
 		define( 'GITHUB_REPO_URL' , $this->github_repo_url );
 
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 		define( 'MAILPOET_PIWIK_ADDON_SCRIPT_MODE', $suffix );
 
+	}
+
+	/**
+	 * Loads requirements for the plugin before everything else.
+	 *
+	 * @access public
+	 * @return MAILPOET_VERSION
+	 */
+	public function plugin_override() {
+		define( 'MAILPOET_VERSION', WYSIJA::get_version() );
 	}
 
 	/**
@@ -178,28 +207,36 @@ final class MailPoet_Piwik_Addon {
 	private function check_requirements() {
 		global $wp_version;
 
+		require_once(ABSPATH.'/wp-admin/includes/plugin.php');
+
 		if (!version_compare($wp_version, MAILPOET_PIWIK_ADDON_WP_VERSION_REQUIRE, '>=')) {
 			add_action('admin_notices', array( &$this, 'display_req_notice' ) );
 			return false;
 		}
 
-		if( !is_plugin_active( 'wp-piwik/wp-piwik.php' ) && !is_plugin_active( 'wysija-newsletters/index.php' ) ) {
-			add_action('admin_notices', array( &$this, 'display_req_notice_mailpoet' ) );
-			add_action('admin_notices', array( &$this, 'display_req_notice_piwik' ) );
-			return false;
-		}
+		if( function_exists( 'is_plugin_active' ) ) {
+			if( !is_plugin_active( 'wp-piwik/wp-piwik.php' ) && !is_plugin_active( 'wysija-newsletters/index.php' ) ) {
+				add_action('admin_notices', array( &$this, 'display_req_notice_mailpoet' ) );
+				add_action('admin_notices', array( &$this, 'display_req_notice_piwik' ) );
+				return false;
+			}
 
-		if( !is_plugin_active( 'wysija-newsletters/index.php' ) ) {
-			add_action('admin_notices', array( &$this, 'display_req_notice_mailpoet' ) );
-			return false;
-		}
+			if( !is_plugin_active( 'wysija-newsletters/index.php' ) ) {
+				add_action('admin_notices', array( &$this, 'display_req_notice_mailpoet' ) );
+				return false;
+			}
+			else if( MAILPOET_VERSION < $this->mp_version_min ) {
+				add_action('admin_notices', array( &$this, 'display_req_min_notice_mailpoet' ) );
+				return false;
+			}
 
-		if( !is_plugin_active( 'wp-piwik/wp-piwik.php' ) ) {
-			add_action('admin_notices', array( &$this, 'display_req_notice_piwik' ) );
-			return false;
-		}
+			if( !is_plugin_active( 'wp-piwik/wp-piwik.php' ) ) {
+				add_action('admin_notices', array( &$this, 'display_req_notice_piwik' ) );
+				return false;
+			}
 
-		return true;
+			return true;
+		}
 	}
 
 	/**
@@ -209,7 +246,7 @@ final class MailPoet_Piwik_Addon {
 	 */
 	static function display_req_notice() {
 		echo '<div id="message" class="error"><p>';
-		echo sprintf( __('Sorry, <strong>%s</strong> requires WordPress ' . MAILPOET_PIWIK_ADDON_WP_VERSION_REQUIRE . ' or higher. Please <a href="%s">upgrade</a> your WordPress setup.', 'mailpoet_piwik_addon'), MAILPOET_PIWIK_ADDON, admin_url( 'update-core.php' ) );
+		echo sprintf( __('Sorry, <strong>%s</strong> requires WordPress ' . MAILPOET_PIWIK_ADDON_WP_VERSION_REQUIRE . ' or higher. Please <a href="%s">upgrade</a> your WordPress setup.', MAILPOET_PIWIK_ADDON_TEXT_DOMAIN), MAILPOET_PIWIK_ADDON, admin_url( 'update-core.php' ) );
 		echo '</p></div>';
 	}
 
@@ -220,7 +257,7 @@ final class MailPoet_Piwik_Addon {
 	 */
 	static function display_req_notice_piwik() {
 		echo '<div id="message" class="error"><p>';
-		echo sprintf( __('Sorry, <strong>%s</strong> requires WP-Piwik for this plugin to work. Please install and activate <strong><a href="%s">WP Piwik</a></strong> first.', 'mailpoet_piwik_addon'), MAILPOET_PIWIK_ADDON, admin_url('plugin-install.php?tab=search&type=term&s=WP+Piwik') );
+		echo sprintf( __('Sorry, <strong>%s</strong> requires WP-Piwik for this plugin to work. Please install and activate <strong><a href="%s">WP Piwik</a></strong> first.', MAILPOET_PIWIK_ADDON_TEXT_DOMAIN), MAILPOET_PIWIK_ADDON, admin_url('plugin-install.php?tab=search&type=term&s=WP+Piwik') );
 		echo '</p></div>';
 	}
 
@@ -231,27 +268,33 @@ final class MailPoet_Piwik_Addon {
 	 */
 	static function display_req_notice_mailpoet() {
 		echo '<div id="message" class="error"><p>';
-		echo sprintf( __('Sorry, <strong>%s</strong> requires MailPoet Newsletters for this plugin to work. Please install and activate <strong><a href="%s">MailPoet Newsletters</a></strong> first.', 'mailpoet_piwik_addon'), MAILPOET_PIWIK_ADDON, admin_url('plugin-install.php?tab=search&type=term&s=MailPoet+Newsletters+%28formerly+Wysija%29') );
+		echo sprintf( __('Sorry, <strong>%s</strong> requires MailPoet Newsletters for this plugin to work. Please install and activate <strong><a href="%s">MailPoet Newsletters</a></strong> first.', MAILPOET_PIWIK_ADDON_TEXT_DOMAIN), MAILPOET_PIWIK_ADDON, admin_url('plugin-install.php?tab=search&type=term&s=MailPoet+Newsletters+%28formerly+Wysija%29') );
 		echo '</p></div>';
 	}
 
 	/**
-	 * Include required core files used in admin and on the frontend.
+	 * Display the version requirement notice for MailPoet.
+	 *
+	 * @access static
+	 */
+	static function display_req_min_notice_mailpoet() {
+		echo '<div id="message" class="error"><p>';
+		echo sprintf( __('Sorry, <strong>%s</strong> requires MailPoet Newsletters to be version %s or higher for the plugin to work. Please update MailPoet Newsletters.', MAILPOET_PIWIK_ADDON_TEXT_DOMAIN), MAILPOET_PIWIK_ADDON, $this->mp_version_min );
+		echo '</p></div>';
+	}
+
+	/**
+	 * Include required core files used through out the plugin.
 	 *
 	 * @access public
 	 * @return void
 	 */
 	public function includes() {
-		include_once( 'includes/mailpoet-piwik-addon-core-functions.php' ); // Contains core functions for the front/back end.
+		include_once( 'includes/mailpoet-piwik-addon-core-functions.php' ); // Contains core functions for the plugin.
 
 		if ( is_admin() ) {
 			$this->admin_includes();
 		}
-
-		if ( ! is_admin() || defined('DOING_AJAX') ) {
-			$this->frontend_includes();
-		}
-
 	}
 
 	/**
@@ -264,16 +307,6 @@ final class MailPoet_Piwik_Addon {
 		include_once( 'includes/admin/mailpoet-piwik-addon-admin-hooks.php' ); // Hooks used in the admin
 		include_once( 'includes/admin/class-mailpoet-piwik-addon-install.php' ); // Install plugin
 		include_once( 'includes/admin/class-mailpoet-piwik-addon-admin.php' ); // Admin section
-	}
-
-	/**
-	 * Include required frontend files.
-	 *
-	 * @access public
-	 * @return void
-	 */
-	public function frontend_includes() {
-		include_once( 'includes/mailpoet-piwik-addon-hooks.php' ); // Hooks used in the frontend
 	}
 
 	/**
@@ -299,14 +332,14 @@ final class MailPoet_Piwik_Addon {
 	 * @return void
 	 */
 	public function load_plugin_textdomain() {
-		$locale = apply_filters( 'plugin_locale', get_locale(), 'mailpoet_piwik_addon' );
+		$locale = apply_filters( 'plugin_locale', get_locale(), self::text_domain );
 
-		load_textdomain( 'mailpoet_piwik_addon', WP_LANG_DIR . "/mailpoet-piwik-addon/mailpoet-piwik-addon-" . $locale . ".mo" );
+		load_textdomain( self::text_domain, WP_LANG_DIR . "/" . self::slug . "/" . $locale . ".mo" );
 
 		// Set Plugin Languages Directory
 		// Plugin translations can be filed in the mailpoet-piwik-addon/languages/ directory
 		// Wordpress translations can be filed in the wp-content/languages/ directory
-		load_plugin_textdomain( 'mailpoet_piwik_addon', false, dirname( plugin_basename( __FILE__ ) ) . "/languages" );
+		load_plugin_textdomain( self::text_domain, false, dirname( plugin_basename( __FILE__ ) ) . "/languages" );
 	}
 
 	/** Helper functions ******************************************************/

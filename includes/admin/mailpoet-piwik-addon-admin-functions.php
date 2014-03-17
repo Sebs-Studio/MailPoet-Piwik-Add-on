@@ -41,32 +41,6 @@ function extend_step3_piwik_tracking($fields){
 		'desc' => '',
 	);
 
-	/*$fields['piwikbaseurl'] = array(
-		'type' => 'input',
-		'isparams' => 'params',
-		'class' => 'required',
-		'label' => __('Piwik Base URL', WYSIJA),
-		'desc' => __('Enter your Piwik base url. For example, "http://yourdomain.com/piwik/". No idea what I\'m talking about? [link]Get help.[/link]', WYSIJA),
-		'link' => '<a href="http://peepbo.de/board/viewtopic.php?f=5&t=10" target="_blank">'
-	);*/
-
-	// Not sure if this field will be needed if the user puts in the site ID number below.
-	/*$fields['piwikauthtoken'] = array(
-		'type' => 'input',
-		'isparams' => 'params',
-		'class' => 'required',
-		'label' => __('Piwik Auth Token', WYSIJA),
-		'desc' => __('Enter your personal Piwik authentification token. You can get the token on the API page inside your Piwik interface. It looks like "1234a5cd6789e0a12345b678cd9012ef"', WYSIJA),
-	);*/
-
-	$fields['piwiksiteid'] = array(
-		'type' => 'input',
-		'isparams' => 'params',
-		'class' => 'required',
-		'label' => __('Piwik Site ID', WYSIJA),
-		'desc' => __('Enter the ID number of the site you are tracking', WYSIJA),
-	);
-
 	$fields['piwikcampaignname'] = array(
 		'type' => 'input',
 		'isparams' => 'params',
@@ -83,12 +57,77 @@ function extend_step3_piwik_tracking($fields){
 		'desc' => __('(optional) Used to track the keyword, or sub-category', WYSIJA),
 	);
 
-	// Need to work on this part more.
 	if( isset( $_REQUEST['wysija']['email']['params']['piwikenabled']) ) {
 		$data['email']['params']['piwikcampaignname'] = $fields['piwikcampaignname']['default'] = $_REQUEST['wysija']['email']['params']['piwikcampaignname'];
+		$data['email']['params']['piwikcampaignkeyword'] = $fields['piwikcampaignkeyword']['default'] = $_REQUEST['wysija']['email']['params']['piwikcampaignkeyword'];
 	}
 
 	return $fields;
+}
+
+/**
+ * This tells MailPoet to apply 
+ * Piwik tracking to the newsletter.
+ * Applys the campaign and campaign keywords if any.
+ */
+function apply_piwik_tracking($email_url, $params) {
+	if ( isset( $params['piwikenabled'] ) ) {
+		if ( isset( $params['piwikcampaignname'] ) && isset( $email->params['piwikcampaignkeyword'] ) ) {
+			$email_url = add_piwik_tracking_code( $email_url, trim( $email->params['piwikcampaignname'] ), trim( $email->params['piwikcampaignkeyword'] ) );
+		}
+		else if ( isset( $params['piwikcampaignname'] ) ) {
+			$email_url = add_piwik_tracking_code( $email_url, trim( $email->params['piwikcampaignname'] ) );
+		}
+	}
+}
+
+/**
+ * Embed Piwik tracking code into a link
+ * @param string $link
+ * @param string $campaign
+ * @param string $keywords
+ * @param string $media (email, web)
+ * @return string
+ */
+function add_piwik_tracking_code( $link, $campaign, $keywords = '', $media = 'email' ) {
+	$mailer = WYSIJA::get('helper', 'mailer'); // Access the mailer
+
+	if( !$mailer->is_wysija_link($link) && $mailer->is_internal_link($link) ) {
+		$hash_part_url = '';
+		$argsp = array();
+
+		if( strpos($link, '#') !== false ) {
+			$hash_part_url = substr($link, strpos($link, '#'));
+			$link = substr($link, 0, strpos($link, '#'));
+		}
+
+		if( !in_array( $argsp['utm_source'], $argsp ) ) {
+			$argsp['utm_source']= 'wysija';
+		}
+
+		if( !in_array( $argsp['utm_medium'], $argsp ) ) {
+			$argsp['utm_medium'] = !empty($media) ? trim($media) : 'email';
+		}
+
+		$argsp['pk_campaign'] = trim($campaign);
+
+		// If keywords are also tracked, then prepare them.
+		if( !empty( $keywords ) ) {
+			$keywords = explode(',', $keywords); // Separates each keyword.
+			$count_keywords = count($keywords); // Counts how many keywords are to be tracked.
+			if( $count_keywords > 1 ) { // If there are more than one keyword then prepare the array for the url.
+				foreach( $keywords as $keyword ) {
+					$keywords[] = str_replace(' ', '%2C', $keyword . ' '); // Filters the commas at the end of each keyword.
+				}
+			}
+			$argsp['pk_kwd'] = trim($keywords);
+		}
+
+		$link .= $mailer->get_started_character_of_param($link);
+		$link .= http_build_query($argsp);
+		$link .= $hash_part_url;
+	}
+	return $link;
 }
 
 /**
@@ -96,7 +135,7 @@ function extend_step3_piwik_tracking($fields){
  */
 function display_notice_piwik_set_tracking() {
 	echo '<div id="message" class="error"><p>';
-	echo sprintf( __('It appears that you have not set the tracking in WP Piwik. Please complete the <a href="%s">settings</a> in <strong>WP Piwik</strong> for tracking to work in <strong>MailPoet Newsletters</strong>.', 'mailpoet_piwik_addon'), admin_url('options-general.php?page=wp-piwik/wp-piwik.php') );
+	echo sprintf( __('It appears that you have not set the tracking in WP Piwik. Please complete the <a href="%s">settings</a> in <strong>WP Piwik</strong> for tracking to work in <strong>MailPoet Newsletters</strong>.', MAILPOET_PIWIK_ADDON_TEXT_DOMAIN), admin_url('options-general.php?page=wp-piwik/wp-piwik.php') );
 	echo '</p></div>';
 }
 
