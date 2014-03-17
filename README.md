@@ -35,7 +35,7 @@ To contribute to the plugin, visit https://github.com/seb86/MailPoet-Piwik-Add-O
 
 __Minimum Requirements__
 
-* MailPoet
+* MailPoet v2.6.0.8
 * WP Piwik
 
 __Automatic installation__
@@ -66,6 +66,6 @@ Automatic updates should work like a charm; as always though, ensure you backup 
 
 ## Changelog
 
-__1.0.0 - 05/03/2014__
+__1.0.0 - 17/03/2014__
 
 * Working Progress Release.
