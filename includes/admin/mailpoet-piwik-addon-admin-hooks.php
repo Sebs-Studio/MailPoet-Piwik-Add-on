@@ -29,7 +29,7 @@ if ( ! is_wp_piwik_plugin_set_for_tracking() ) {
  */
 function extend_newsletters() {
 	// Will run action and filter hooks if MailPoet is version 2.6.0.8
-	if ( WYSIJA::get_version() >= '2.6.0.8' ) {
+	if ( WYSIJA::get_version() >= MailPoet_Piwik_Addon()->mp_version_min ) {
 		if ( isset( $_REQUEST['page'] ) ) {
 
 			switch( $_REQUEST['page'] ) {

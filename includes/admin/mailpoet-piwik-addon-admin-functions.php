@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * @return array
  */
 function mailpoet_piwik_addon_get_screen_ids() {
-	$mailpoet_piwik_addon_screen_id = strtolower( str_replace ( ' ', '-', __( 'MailPoet Piwik Add-on', 'mailpoet_piwik_addon' ) ) );
+	$mailpoet_piwik_addon_screen_id = strtolower( str_replace ( ' ', '-', __( 'MailPoet Piwik Add-on', MAILPOET_PIWIK_ADDON_TEXT_DOMAIN ) ) );
 
 	return apply_filters( 'mailpoet_piwik_addon_screen_ids', array(
 		'toplevel_page_' . $mailpoet_piwik_addon_screen_id,
@@ -37,7 +37,7 @@ function extend_step3_piwik_tracking($fields){
 		'type' => 'checkbox',
 		'isparams' => 'params',
 		'class' => '',
-		'label' => __('Enable to track with Piwik', WYSIJA),
+		'label' => __('Enable to track with Piwik', MAILPOET_PIWIK_ADDON_TEXT_DOMAIN),
 		'desc' => '',
 	);
 
@@ -45,16 +45,16 @@ function extend_step3_piwik_tracking($fields){
 		'type' => 'input',
 		'isparams' => 'params',
 		'class' => 'required',
-		'label' => __('Piwik Campaign Name', WYSIJA),
-		'desc' => __('Enter the name of the campaign you are tracking', WYSIJA),
+		'label' => __('Piwik Campaign Name', MAILPOET_PIWIK_ADDON_TEXT_DOMAIN),
+		'desc' => __('Enter the name of the campaign you are tracking', MAILPOET_PIWIK_ADDON_TEXT_DOMAIN),
 	);
 
 	$fields['piwikcampaignkeyword'] = array(
 		'type' => 'input',
 		'isparams' => 'params',
 		'class' => 'optional',
-		'label' => __('Piwik Campaign Keyword', WYSIJA),
-		'desc' => __('(optional) Used to track the keyword, or sub-category', WYSIJA),
+		'label' => __('Piwik Campaign Keyword', MAILPOET_PIWIK_ADDON_TEXT_DOMAIN),
+		'desc' => __('(optional) Used to track the keyword, or sub-category', MAILPOET_PIWIK_ADDON_TEXT_DOMAIN),
 	);
 
 	if( isset( $_REQUEST['wysija']['email']['params']['piwikenabled']) ) {
@@ -69,14 +69,17 @@ function extend_step3_piwik_tracking($fields){
  * This tells MailPoet to apply 
  * Piwik tracking to the newsletter.
  * Applys the campaign and campaign keywords if any.
+ *
+ * @param string $email_url
+ * @param array $params
  */
 function apply_piwik_tracking($email_url, $params) {
 	if ( isset( $params['piwikenabled'] ) ) {
-		if ( isset( $params['piwikcampaignname'] ) && isset( $email->params['piwikcampaignkeyword'] ) ) {
-			$email_url = add_piwik_tracking_code( $email_url, trim( $email->params['piwikcampaignname'] ), trim( $email->params['piwikcampaignkeyword'] ) );
+		if ( isset( $params['piwikcampaignname'] ) && isset( $params['piwikcampaignkeyword'] ) ) {
+			$email_url = add_piwik_tracking_code( $email_url, trim( $params['piwikcampaignname'] ), trim( $params['piwikcampaignkeyword'] ) );
 		}
 		else if ( isset( $params['piwikcampaignname'] ) ) {
-			$email_url = add_piwik_tracking_code( $email_url, trim( $email->params['piwikcampaignname'] ) );
+			$email_url = add_piwik_tracking_code( $email_url, trim( $params['piwikcampaignname'] ) );
 		}
 	}
 }
@@ -101,11 +104,12 @@ function add_piwik_tracking_code( $link, $campaign, $keywords = '', $media = 'em
 			$link = substr($link, 0, strpos($link, '#'));
 		}
 
-		if( !in_array( $argsp['utm_source'], $argsp ) ) {
+		// Not sure if this is needed. Should only load if Google Tracking is not used.
+		if( !in_array( 'utm_source', $argsp ) ) {
 			$argsp['utm_source']= 'wysija';
 		}
 
-		if( !in_array( $argsp['utm_medium'], $argsp ) ) {
+		if( !in_array( 'utm_medium', $argsp ) ) {
 			$argsp['utm_medium'] = !empty($media) ? trim($media) : 'email';
 		}
 
@@ -113,12 +117,19 @@ function add_piwik_tracking_code( $link, $campaign, $keywords = '', $media = 'em
 
 		// If keywords are also tracked, then prepare them.
 		if( !empty( $keywords ) ) {
+			$keywords = trim($keywords);
 			$keywords = explode(',', $keywords); // Separates each keyword.
 			$count_keywords = count($keywords); // Counts how many keywords are to be tracked.
-			if( $count_keywords > 1 ) { // If there are more than one keyword then prepare the array for the url.
+
+			if( $count_keywords > 1 ) { // If there is more than one keyword entered then prepare the array for the url.
+				$keyword = ''; // Set blank so the keywords can join together again after.
 				foreach( $keywords as $keyword ) {
-					$keywords[] = str_replace(' ', '%2C', $keyword . ' '); // Filters the commas at the end of each keyword.
+					$keyword = str_replace(' ', '%2C', $keyword . ' '); // Filters the commas at the end of each keyword.
 				}
+				$keywords = $keyword;
+			}
+			else{
+				$keywords = implode(',', $keywords); // Convert array to string again.
 			}
 			$argsp['pk_kwd'] = trim($keywords);
 		}

@@ -37,10 +37,10 @@ class MailPoet_Piwik_Addon_Admin_Help {
 
 			$screen->add_help_tab( array(
 				'id'	=> 'mailpoet_piwik_addon_bugs_tab',
-				'title'	=> __( 'Piwik Tracking Addon', 'mailpoet_piwik_addon' ),
+				'title'	=> __( 'Piwik Tracking Addon', MAILPOET_PIWIK_ADDON_TEXT_DOMAIN ),
 				'content'	=>
 
-					'<p>' . sprintf( __( 'If you find a bug within <strong>%s</strong> you can create a ticket via <a href="%s">Github issues</a>. Ensure you read the <a href="%s">contribution guide</a> prior to submitting your report. Be as descriptive as possible.', 'mailpoet_piwik_addon' ), MailPoet_Piwik_Addon()->name, GITHUB_REPO_URL . 'issues?state=open', GITHUB_REPO_URL . 'blob/master/CONTRIBUTING.md' ) . '</p>'
+					'<p>' . sprintf( __( 'If you find a bug within <strong>%s</strong> you can create a ticket via <a href="%s">Github issues</a>. Ensure you read the <a href="%s">contribution guide</a> prior to submitting your report. Be as descriptive as possible.', MAILPOET_PIWIK_ADDON_TEXT_DOMAIN ), MailPoet_Piwik_Addon()->name, GITHUB_REPO_URL . 'issues?state=open', GITHUB_REPO_URL . 'blob/master/CONTRIBUTING.md' ) . '</p>'
 
 			) );
 

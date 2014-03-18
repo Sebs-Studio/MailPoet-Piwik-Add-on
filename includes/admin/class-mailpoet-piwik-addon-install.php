@@ -23,7 +23,6 @@ if ( ! class_exists( 'MailPoet_Piwik_Addon_Install' ) ) {
 		public function __construct() {
 			register_activation_hook( MAILPOET_PIWIK_ADDON_FILE, array( &$this, 'install' ) );
 
-			add_action( 'admin_init', array( &$this, 'install_actions' ) );
 			add_action( 'admin_init', array( &$this, 'check_version' ), 5 );
 			add_action( 'in_plugin_update_message-'.plugin_basename( dirname( dirname( __FILE__ ) ) ), array( &$this, 'in_plugin_update_message' ) );
 		}
@@ -35,22 +34,8 @@ if ( ! class_exists( 'MailPoet_Piwik_Addon_Install' ) ) {
 		 * @return void
 		 */
 		public function check_version() {
-			if ( ! defined( 'IFRAME_REQUEST' ) && ( get_option( 'mailpoet_piwik_addon_version' ) != MailPoet_Piwik_Addon()->version || get_option( 'mailpoet_piwik_addon_db_version' ) != MailPoet_Piwik_Addon()->version ) ) {
+			if ( ! defined( 'IFRAME_REQUEST' ) && ( get_option( 'mailpoet_piwik_addon_version' ) != MailPoet_Piwik_Addon()->version ) ) {
 				$this->install();
-			}
-		}
-
-		/**
-		 * Install actions such as installing pages when a button is clicked.
-		 */
-		public function install_actions() {
-			// Update button
-			if ( ! empty( $_GET['do_update_mailpoet_piwik_addon'] ) ) {
-
-				$this->update();
-
-				// Update complete
-				delete_option( '_mailpoet_piwik_addon_needs_update' );
 			}
 		}
 
@@ -58,35 +43,8 @@ if ( ! class_exists( 'MailPoet_Piwik_Addon_Install' ) ) {
 		 * Install MailPoet Piwik Add-on
 		 */
 		public function install() {
-			// Queue upgrades
-			$current_version = get_option( 'mailpoet_piwik_addon_version', null );
-			$current_db_version = get_option( 'mailpoet_piwik_addon_db_version', null );
-
-			/*if ( version_compare( $current_db_version, '1.0.1', '<' ) && null !== $current_db_version ) {
-				update_option( '_mailpoet_piwik_addon_needs_update', 1 );
-			}
-			else {
-				update_option( 'mailpoet_piwik_addon_db_version', MailPoet_Piwik_Addon()->version );
-			}*/
-
 			// Update version
 			update_option( 'mailpoet_piwik_addon_version', MailPoet_Piwik_Addon()->version );
-
-		}
-
-		/**
-		 * Handle updates
-		 */
-		public function update() {
-			// Do updates
-			$current_db_version = get_option( 'mailpoet_piwik_addon_db_version' );
-
-			/*if ( version_compare( $current_db_version, '1.0.1', '<' ) || MAILPOET_PIWIK_ADDON_VERSION == '1.0.1' ) {
-				include( 'updates/mailpoet-piwik-addon-update-1.0.1.php' );
-				update_option( 'mailpoet_piwik_addon_db_version', '1.0.1' );
-			}*/
-
-			update_option( 'mailpoet_piwik_addon_db_version', MailPoet_Piwik_Addon()->version );
 		}
 
 		/**
