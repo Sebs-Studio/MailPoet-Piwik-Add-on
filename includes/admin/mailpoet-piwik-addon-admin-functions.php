@@ -30,7 +30,7 @@ function mailpoet_piwik_addon_get_screen_ids() {
  * @return type
  */
 function extend_step3_piwik_tracking($fields){
-	$config = WYSIJA::get('config','model');
+	$config = WYSIJA::get('config', 'model');
 
 	// When this checkbox is ticked the piwik fields below show up.
 	$fields['piwikenabled'] = array(
@@ -90,7 +90,7 @@ function apply_piwik_tracking($email_url, $params) {
  * @return string
  */
 function add_piwik_tracking_code( $link, $campaign, $keywords = '', $media = 'email' ) {
-	$mailer = WYSIJA::get('helper', 'mailer'); // Access the mailer
+	$mailer = WYSIJA::get('mailer', 'helper'); // Access the mailer
 
 	if( !$mailer->is_wysija_link($link) && $mailer->is_internal_link($link) ) {
 		$hash_part_url = '';
