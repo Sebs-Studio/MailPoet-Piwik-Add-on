@@ -25,10 +25,6 @@ If you have done a translation via PoEdit, then you are welcome to send that als
 
 I'll acknowledge your contribution here with either your full name or username given.
 
-= Documentation =
-
-For all documentation on this plugin go to: http://docs.sebs-studio.com/user-guide/extension/mailpoet-piwik-add-on/
-
 = Contributing =
 
 To contribute to the plugin, visit https://github.com/seb86/MailPoet-Piwik-Add-On/blob/master/CONTRIBUTING.md for details.
@@ -56,7 +52,9 @@ The manual installation method involves downloading my plugin and uploading it t
 
 = Setting up the Plugin =
 
-- Coming Soon
+Simply install and active the plugin, then when you get to step 3 on creating a newsletter simply enter the campaign and keywords you wish to track. That's it.
+
+> Important Note: If you track more than one keyword, place ',' after each keyword for all keywords to be tracked.
 
 = Upgrading =
 
@@ -64,10 +62,10 @@ Automatic updates should work like a charm; as always though, ensure you backup 
 
 == Screenshots ==
 
-1. Coming Soon
+1. Step 3 of creating a Newsletter
 
 == Changelog ==
 
-1.0.0 - 17/03/2014
+1.0.0 - ?/03/2014
 
-* Working Progress Release.
+* Initial Release.
