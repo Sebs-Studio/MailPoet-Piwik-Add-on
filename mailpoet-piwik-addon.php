@@ -2,7 +2,7 @@
 /*
  * Plugin Name: MailPoet Piwik Add-on
  * Plugin URI: http://wordpress.org/plugins/mailpoet-piwik-add-on/
- * Description: Enables you to track anylatics with Piwik in your newsletters.
+ * Description: Enables you to track analytics's with Piwik in your newsletters.
  * Version: 1.0.0
  * Author: Sebs Studio
  * Author URI: http://www.sebs-studio.com
@@ -128,16 +128,8 @@ final class MailPoet_Piwik_Addon {
 	 * @access public
 	 */
 	public function __construct() {
-		// Define constants
-		$this->define_constants();
-
-		add_action( 'plugins_loaded', array( &$this, 'plugin_override' ) ); // Must be loaded before everything else.
-
-		// Check plugin requirements
-		$this->check_requirements();
-
-		// Include required files
-		$this->includes();
+		// Must be loaded before everything else.
+		add_action( 'plugins_loaded', array( &$this, 'plugin_override' ) );
 
 		// Hooks
 		add_filter( 'plugin_row_meta', array( &$this, 'plugin_row_meta' ), 10, 2 );
@@ -194,7 +186,9 @@ final class MailPoet_Piwik_Addon {
 	 * @return MAILPOET_VERSION
 	 */
 	public function plugin_override() {
-		define( 'MAILPOET_VERSION', WYSIJA::get_version() );
+		if( class_exists( 'WYSIJA' ) ) {
+			define( 'MAILPOET_VERSION', WYSIJA::get_version() );
+		}
 	}
 
 	/**
@@ -315,6 +309,15 @@ final class MailPoet_Piwik_Addon {
 	 * @access public
 	 */
 	public function init_mailpoet_piwik_addon() {
+		// Define constants
+		$this->define_constants();
+
+		// Check plugin requirements
+		$this->check_requirements();
+
+		// Include required files
+		$this->includes();
+
 		// Set up localisation
 		$this->load_plugin_textdomain();
 
